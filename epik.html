@@ -1,0 +1,174 @@
+<html>
+<head>
+<style>
+#container{
+	background-color:PapayaWhip;
+	font-family : comic sans ms;
+	margin:5% 15%;
+	padding:5px 10px; 
+	border:3pt dotted blue;
+	font-size:16pt;
+}
+
+.etichette{
+    width: 30%;
+	text-align: left;
+	font-weight: bold;
+	
+}
+.dati{
+    width: 30%;
+}
+#inviodati{
+	border:3pt solid green;
+	font-size:16pt;
+}
+#errore{
+	color:red;
+}
+input[type=number]{font-size: 13pt;}
+
+</style>
+<script>
+window.onload= function(){
+		//preparazione puntatori ai campi
+		var nome    = document.getElementById("nome");
+		var cognome = document.getElementById("cognome");
+		var classe  = document.getElementById("classe");
+		var sessoM   = document.getElementById("sessoM");
+		var sezione = document.getElementById("sezione");
+		var errore  = document.getElementById("errore");
+
+		//gestione evento click
+document.getElementById("inviodati").onclick = saluto;
+}
+
+function saluto(){ 
+	errore.innerHTML ="&nbsp;";  //pulisce errori precedentemente scritti
+	
+	var testo ="BUONGIORNO \n";
+
+	if (controllaSeStringaVuota(nome.value)){
+		errore.innerHTML ="Devi indicare il nome";
+		nome.focus();
+		return;
+	}
+
+	if (controllaSeStringaVuota(cognome.value)){
+		errore.innerHTML ="Devi indicare il Cognome";
+		cognome.focus();
+		return;
+	}	
+	
+	
+	if (controllaSeStringaVuota(classe.value) || (classe.value<1 || classe.value>5)){
+		errore.innerHTML ="Devi indicare la classe [1..5]";
+		classe.focus();
+		return;
+	}	
+	
+	if (sezione.value =='NP'){
+		errore.innerHTML ="Devi indicare la sezione";
+		sezione.focus();
+		return;
+	}
+	
+	//per gestire i RADIO occorre valutare quale di essi è stato selezionato-checked(con un for)
+	//o utilizzando gli attributi name:  document.f1.sezione.value
+	//alert(document.nameF1.nameSezione.value);
+	//oppure visto che abbiamo solo 2 valori possibili:
+	if ( sessoM.checked  == true) 	   testo += "Signor ";
+	else testo += "Signora ";
+
+	testo += nome.value.toUpperCase() + " "+ cognome.value.toUpperCase() + "\n"+"della classe "+ classe.value;
+	
+	switch (sezione.value) {
+		case "A":
+		case "B":
+			testo += sezione.value +"\n"+"Indirizzo Grafico";
+			break;
+		case "C":
+		case "D":
+		case "E":
+		case "M":
+			testo += sezione.value +"\n"+"Indirizzo Informatico";
+			break;
+		case "F":
+		case "G":
+		case "H":
+			testo += sezione.value +"\n"+"Indirizzo Relazioni Internazionali";
+			break;
+		case "I":
+		case "L":
+			testo += sezione.value +"\n"+"Indirizzo Scientifico";
+			break;
+	}
+	alert(testo);
+	document.getElementById("f1").submit();
+	
+}
+
+
+function controllaSeStringaVuota(s) {
+	// restituisce true se il campo s è vuoto
+	// Da utilizzare per controllare tutti i campi che riterrai necessario
+
+		if (s.length == 0) return true
+		return false;
+}
+	
+</script>	
+
+
+</head>
+<body>
+<div id="container">
+<h1> Identificazione Utente </h1>
+<div>
+<form id="f1" name="nameF1" action="valid.html" method ="post">
+  <fieldset>
+	<div class="etichette"> Nome </div>
+	<input id="nome" name="nome" type="text" value="" class="dati" maxlength="25" placeholder="Inserisci il tuo nome">
+		   
+	<div class="etichette"> Cognome </div>
+	<input id="cognome" name="cognome" type="text" value="" class="dati" maxlength="25" placeholder="Inserisci il tuo cognome">
+	
+	<div class="etichette"> Classe </div>
+	<input id="classe" name="classe" type="number" value=""  class="dati" min="1" max="5" style="width:10%">
+	
+	<div class="etichette" style="width:8%"> Sezione </div>
+	<select id="sezione" name="nameSezione" class="dati" style="width:10%">
+		<option value="NP"> - </option>
+		<option value="A"> A </option>
+		<option value="B"> B </option>
+		<option value="C"> C </option>
+		<option value="D"> D </option>
+		<option value="E"> E </option>
+		<option value="F"> F </option>
+		<option value="G"> G </option>
+		<option value="H"> H </option>
+		<option value="I"> I </option>
+		<option value="L"> L </option>
+		<option value="M"> M </option>
+	</select>
+	
+
+	<fieldset>
+		<legend>Sesso:</legend>
+			<input type="radio" name = "sesso" id="sessoF" value="F" checked>F
+			<input type="radio" name = "sesso" id="sessoM" value="M">M
+	</fieldset>
+  </fieldset>
+
+	<div id="errore">&nbsp;</div>
+
+	<div style="text-align:center">
+	   <input type="button" id="inviodati" value="Entra"> 	
+	</div>
+
+
+</form>
+</div>
+
+</body>
+</html> 
